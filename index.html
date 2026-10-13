@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Plataforma de estudos para o concurso Guarda Municipal Nível II de São Gonçalo/RJ — Edital nº 001/PMSG/2026 (Instituto SELECON).">
+  <title>Preparatório Guarda Municipal de São Gonçalo</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===================== CABEÇALHO ===================== -->
+  <header class="topo">
+    <div class="topo-inner">
+      <p class="marca">Preparatório Guarda Municipal de São Gonçalo
+        <small>Edital nº 001/PMSG/2026 — Estudo particular, sem vínculo oficial</small>
+      </p>
+      <nav class="nav-principal" aria-label="Navegação principal">
+        <button type="button" class="nav-btn" data-view="home" aria-current="page">Início</button>
+        <button type="button" class="nav-btn" data-view="estudar">Estudar</button>
+        <button type="button" class="nav-btn" data-view="simulado">Simulado</button>
+        <button type="button" class="nav-btn" data-view="erros">Caderno de erros</button>
+        <button type="button" class="nav-btn" data-view="desempenho">Desempenho</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Aviso exibido apenas quando o navegador bloqueia o localStorage -->
+  <div class="aviso-persistencia" id="aviso-persistencia" hidden></div>
+
+  <main>
+
+    <!-- ===================== VISÃO: INÍCIO ===================== -->
+    <section id="view-home" class="view">
+      <div class="apresentacao">
+        <h1>Preparatório Guarda Municipal de São Gonçalo</h1>
+        <p>Estude para o concurso de <strong>Guarda Municipal Nível II de São Gonçalo/RJ</strong>
+          (Edital nº 001/PMSG/2026, Instituto SELECON) com correção imediata, caderno de erros
+          e simulado completo no formato oficial: <strong>80 questões, 100 pontos, 4 horas</strong>.</p>
+        <p class="dica">Banco de estudo particular: questões autorais fundamentadas no Anexo III do edital e
+          questões transcritas da prova anterior de 2020 (sem gabarito oficial). Nenhuma questão é oficial da SELECON.</p>
+      </div>
+
+      <div class="acoes-principais">
+        <button type="button" id="btn-iniciar-simulado" class="btn btn-primario btn-grande">Iniciar simulado completo</button>
+        <button type="button" id="btn-estudar" class="btn btn-secundario btn-grande">Estudar por matéria</button>
+        <button type="button" id="btn-erros" class="btn btn-secundario btn-grande">Revisar meus erros</button>
+        <button type="button" id="btn-desempenho" class="btn btn-secundario btn-grande">Ver meu desempenho</button>
+      </div>
+
+      <div id="home-indicadores"></div>
+      <div id="home-aviso-banco"></div>
+    </section>
+
+    <!-- ===================== VISÃO: ESTUDAR ===================== -->
+    <section id="view-estudar" class="view" hidden>
+
+      <!-- Formulário de filtros da sessão de estudo -->
+      <div id="est-form-wrap">
+        <h2>Estudar por matéria</h2>
+        <p class="dica">Correção imediata com gabarito comentado. Escolha os filtros e a quantidade de questões.</p>
+        <div class="card">
+          <div class="form-grade">
+            <div>
+              <label for="est-f-disciplina">Disciplina</label>
+              <select id="est-f-disciplina"></select>
+            </div>
+            <div>
+              <label for="est-f-topico">Tópico</label>
+              <select id="est-f-topico"></select>
+            </div>
+            <div>
+              <label for="est-f-dificuldade">Dificuldade</label>
+              <select id="est-f-dificuldade"></select>
+            </div>
+            <div>
+              <label for="est-f-quantidade">Quantidade de questões</label>
+              <select id="est-f-quantidade"></select>
+            </div>
+          </div>
+          <p style="margin-top: 16px;">
+            <button type="button" id="btn-est-start" class="btn btn-primario">Começar sessão de estudo</button>
+          </p>
+        </div>
+      </div>
+
+      <!-- Sessão de estudo em andamento -->
+      <div id="est-sessao" hidden>
+        <div class="sessao-cabecalho">
+          <span class="rotulo-sessao" id="est-rotulo">Estudo</span>
+          <span class="progresso-sessao" id="est-progresso"></span>
+        </div>
+        <div id="est-questao" class="card"></div>
+        <div id="est-feedback" aria-live="polite"></div>
+        <div class="sessao-acoes" id="est-acoes">
+          <button type="button" id="est-btn-anterior" class="btn btn-secundario">← Questão anterior</button>
+          <button type="button" id="est-btn-proxima" class="btn btn-primario">Próxima questão</button>
+          <button type="button" id="est-btn-marcar" class="btn btn-secundario" aria-pressed="false">☆ Marcar para revisão</button>
+        </div>
+        <div id="est-grade"></div>
+      </div>
+    </section>
+
+    <!-- ===================== VISÃO: SIMULADO ===================== -->
+    <section id="view-simulado" class="view" hidden>
+
+      <!-- Introdução / validação -->
+      <div id="sim-intro">
+        <h2>Simulado completo</h2>
+        <p>Simulação da <strong>prova objetiva oficial</strong>: 80 questões, 4 alternativas (A–D),
+          <strong>4 horas</strong> de tempo e <strong>100 pontos</strong> (Conhecimentos Específicos vale 2 pontos por questão).
+          O gabarito só é revelado após a entrega. Este resultado é uma simulação de estudo —
+          <strong>não é previsão nem garantia de aprovação</strong> no concurso real.</p>
+        <div id="sim-status"></div>
+        <div id="sim-tabela-dist"></div>
+        <p>
+          <button type="button" id="btn-sim-iniciar" class="btn btn-primario btn-grande">Iniciar simulado completo</button>
+        </p>
+        <div class="card destaque-neutro" id="sim-continuar-wrap" hidden>
+          <p id="sim-continuar-info"></p>
+          <div class="sessao-acoes">
+            <button type="button" id="btn-sim-continuar" class="btn btn-primario">Continuar simulado</button>
+            <button type="button" id="btn-sim-descartar" class="btn btn-perigo">Descartar simulado em andamento</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prova em andamento -->
+      <div id="sim-prova" hidden>
+        <div class="sim-cabecalho">
+          <div class="sim-linha1">
+            <span id="sim-numero">Questão 1 de 80</span>
+            <span class="cronometro" id="sim-cronometro" aria-live="off">04h 00m 00s</span>
+          </div>
+          <div class="barra-progresso-trilho" aria-hidden="true">
+            <div class="barra-progresso-fill" id="sim-barra-progresso"></div>
+          </div>
+          <div class="sim-contagem" id="sim-contagem"></div>
+        </div>
+        <div id="sim-questao" class="card"></div>
+        <div class="sessao-acoes">
+          <button type="button" id="sim-btn-anterior" class="btn btn-secundario">← Anterior</button>
+          <button type="button" id="sim-btn-proxima" class="btn btn-primario">Próxima questão</button>
+          <button type="button" id="sim-btn-marcar" class="btn btn-secundario" aria-pressed="false">☆ Marcar para revisão</button>
+          <button type="button" id="sim-btn-entregar" class="btn btn-perigo">Entregar prova</button>
+        </div>
+        <div id="sim-grade"></div>
+      </div>
+
+      <!-- Resultados (após entrega) -->
+      <div id="sim-resultados" hidden>
+        <h2>Resultado do simulado</h2>
+        <div id="res-conteudo"></div>
+        <div class="sessao-acoes">
+          <button type="button" id="btn-res-revisar" class="btn btn-secundario">Revisar minhas respostas</button>
+          <button type="button" id="btn-res-novo" class="btn btn-primario">Fazer novo simulado</button>
+        </div>
+        <div id="res-gabarito"></div>
+      </div>
+    </section>
+
+    <!-- ===================== VISÃO: CADERNO DE ERROS ===================== -->
+    <section id="view-erros" class="view" hidden>
+      <h2>Caderno de erros</h2>
+      <p id="erros-contador"></p>
+      <div class="card">
+        <div class="form-grade">
+          <div>
+            <label for="er-f-disciplina">Filtrar por disciplina</label>
+            <select id="er-f-disciplina"></select>
+          </div>
+          <div>
+            <label for="er-f-topico">Filtrar por tópico</label>
+            <select id="er-f-topico"></select>
+          </div>
+        </div>
+        <p style="margin-top: 16px;">
+          <button type="button" id="btn-er-sessao" class="btn btn-primario">Iniciar sessão com questões erradas</button>
+        </p>
+        <p class="dica">Acertar uma questão (no estudo, no simulado ou ao refazê-la) retira-a dos pendentes,
+          preservando todo o histórico de tentativas. Apenas ler a explicação não conta como domínio.</p>
+      </div>
+      <div id="erros-lista"></div>
+    </section>
+
+    <!-- ===================== VISÃO: DESEMPENHO ===================== -->
+    <section id="view-desempenho" class="view" hidden>
+      <h2>Painel de desempenho</h2>
+      <div id="desp-conteudo"></div>
+    </section>
+
+  </main>
+
+  <!-- ===================== RODAPÉ ===================== -->
+  <footer>
+    <div class="footer-inner">
+      <span>Plataforma de estudo particular. Allan Rocha</span>
+      <button type="button" id="btn-limpar-progresso" class="btn btn-secundario btn-pequeno">Limpar meu progresso</button>
+    </div>
+  </footer>
+
+  <!-- ===================== MODAL (confirmações e avisos) ===================== -->
+  <div class="modal-overlay" id="modal-overlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+      <h2 id="modal-titulo"></h2>
+      <div id="modal-corpo"></div>
+      <div class="modal-acoes" id="modal-acoes"></div>
+    </div>
+  </div>
+
+  <!-- Scripts locais (ordem importa: banco → persistência → aplicação) -->
+  <script src="js/questions.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
